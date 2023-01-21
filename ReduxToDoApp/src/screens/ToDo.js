@@ -5,9 +5,33 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+
+import React, {useState} from 'react';
+import {useDispatch} from 'react-redux';
+import { addTodo } from '../store/features/todo.slice';
+import { useSelector } from 'react-redux';
+import { addTodoItem } from '../store/features/todo.reducer';
 
 const ToDo = () => {
+
+  let { todos } = useSelector(state => state)
+  
+  console.log(todos.value)
+
+  const [title, settitle] = useState('');
+  let dispatch = useDispatch();
+
+  const add = () => {
+    let newTodo = {
+      id: Math.floor(Math.random() * 1000),
+      title: title
+    }
+
+    dispatch(addTodo(newTodo))
+  }
+
+
+
   return (
     <View style={styles.body}>
       <View style={styles.header}>
@@ -15,12 +39,26 @@ const ToDo = () => {
       </View>
       <View style={styles.title}>
         <Text style={styles.title.text}>Add New To Do</Text>
-        <TextInput style={styles.input} placeholder="New To Do" />
-        <TouchableOpacity style={styles.button}>
+        <TextInput
+          style={styles.input}
+          onChangeText={settitle}
+          placeholder="New To Do"
+        />
+        <TouchableOpacity style={styles.button} onPress={() => add()}>
           <Text style={styles.button.text}>Add</Text>
         </TouchableOpacity>
-          </View>
-          
+      </View>
+
+      {
+        todos.value.map((item) => {
+          return (
+            <>
+              <Text>{item.id}</Text>
+            </>
+          )
+        })
+      }
+
     </View>
   );
 };
