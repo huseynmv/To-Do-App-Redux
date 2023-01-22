@@ -1,4 +1,5 @@
 import {
+  Button,
   StyleSheet,
   Text,
   TextInput,
@@ -8,7 +9,7 @@ import {
 
 import React, {useState} from 'react';
 import {useDispatch} from 'react-redux';
-import { addTodo } from '../store/features/todo.slice';
+import { addTodo, removeTodo } from '../store/features/todo.slice';
 import { useSelector } from 'react-redux';
 import { addTodoItem } from '../store/features/todo.reducer';
 
@@ -29,7 +30,9 @@ const ToDo = () => {
 
     dispatch(addTodo(newTodo))
   }
-
+    const deleteTodo = item => {
+      dispatch(removeTodo(item));
+    };
 
 
   return (
@@ -53,9 +56,10 @@ const ToDo = () => {
         todos.value.map((item) => {
           return (
             <>
-              <Text>{item.id}</Text>
+              <Text>{item.title}</Text>
+              <Button title="Delete" onPress={() => deleteTodo(item)}></Button>
             </>
-          )
+          );
         })
       }
 
